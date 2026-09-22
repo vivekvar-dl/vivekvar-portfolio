@@ -14,8 +14,10 @@ import {
   Sparkles,
 } from "lucide-react";
 import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
 import type { IconType } from "react-icons";
-import { FaAws, FaGithub, FaLinkedinIn } from "react-icons/fa6";
+import { FaAws, FaGithub, FaLinkedinIn, FaMicrosoft } from "react-icons/fa6";
 import { TbBrandAzure } from "react-icons/tb";
 import {
   siCloudflare,
@@ -29,10 +31,15 @@ import {
   siKubernetes,
   siLangchain,
   siLinux,
+  siMeta,
+  siMlflow,
+  siModelcontextprotocol,
+  siMongodb,
   siNeon,
   siNextdotjs,
   siNvidia,
   siOnnx,
+  siOpencv,
   siPlanetscale,
   siPostgresql,
   siPython,
@@ -43,8 +50,10 @@ import {
   siReact,
   siRedis,
   siSupabase,
+  siGooglecloud,
   siTypescript,
   siVercel,
+  siVllm,
   siWeightsandbiases,
 } from "simple-icons";
 
@@ -99,40 +108,63 @@ const jobs = [
 
 const skillGroups: { title: string; skills: Skill[] }[] = [
   {
-    title: "Language",
-    skills: [
-      { name: "Python", href: "https://www.python.org/", icon: siPython },
-      { name: "Go", href: "https://go.dev/", icon: siGo },
-      { name: "TypeScript", href: "https://www.typescriptlang.org/", icon: siTypescript },
-      { name: "JavaScript", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", icon: siJavascript },
-    ],
-  },
-  {
-    title: "AI & web",
+    title: "Model research & post-training",
     skills: [
       { name: "PyTorch", href: "https://pytorch.org/", icon: siPytorch },
-      { name: "Hugging Face", href: "https://huggingface.co/", icon: siHuggingface },
-      { name: "LangChain", href: "https://www.langchain.com/", icon: siLangchain },
-      { name: "FastAPI", href: "https://fastapi.tiangolo.com/", icon: siFastapi },
-      { name: "React", href: "https://react.dev/", icon: siReact, extra: true },
-      { name: "Next.js", href: "https://nextjs.org/", icon: siNextdotjs, extra: true },
+      { name: "Transformers", href: "https://huggingface.co/docs/transformers", icon: siHuggingface },
+      { name: "PEFT", href: "https://huggingface.co/docs/peft", icon: siHuggingface },
+      { name: "TRL", href: "https://huggingface.co/docs/trl", icon: siHuggingface },
+      { name: "LoRA / QLoRA", href: "https://huggingface.co/docs/peft/developer_guides/lora", icon: siHuggingface },
+      { name: "SFT", href: "https://huggingface.co/docs/trl/sft_trainer", icon: siHuggingface, extra: true },
+      { name: "DPO", href: "https://huggingface.co/docs/trl/dpo_trainer", icon: siHuggingface, extra: true },
+      { name: "GRPO", href: "https://huggingface.co/docs/trl/grpo_trainer", icon: siHuggingface, extra: true },
+      { name: "Accelerate", href: "https://huggingface.co/docs/accelerate", icon: siHuggingface, extra: true },
     ],
   },
   {
-    title: "Inference",
+    title: "Distributed training & ML systems",
     skills: [
-      { name: "NVIDIA", href: "https://www.nvidia.com/", icon: siNvidia },
-      { name: "ONNX", href: "https://onnx.ai/", icon: siOnnx },
-      { name: "Ray", href: "https://www.ray.io/", icon: siRay },
-      { name: "Weights & Biases", href: "https://wandb.ai/", icon: siWeightsandbiases, extra: true },
+      { name: "CUDA", href: "https://developer.nvidia.com/cuda-toolkit", icon: siNvidia },
+      { name: "FSDP", href: "https://docs.pytorch.org/docs/stable/fsdp.html", icon: siPytorch },
+      { name: "DeepSpeed", href: "https://www.deepspeed.ai/", customIcon: FaMicrosoft, color: "#5E5E5E" },
+      { name: "ZeRO", href: "https://www.deepspeed.ai/tutorials/zero/", customIcon: FaMicrosoft, color: "#5E5E5E", extra: true },
+      { name: "Megatron Core", href: "https://github.com/NVIDIA/Megatron-LM", icon: siNvidia, extra: true },
+      { name: "FlashAttention", href: "https://github.com/Dao-AILab/flash-attention", icon: siNvidia },
+      { name: "NCCL", href: "https://developer.nvidia.com/nccl", icon: siNvidia, extra: true },
+      { name: "Triton", href: "https://triton-lang.org/", icon: siNvidia, extra: true },
     ],
   },
   {
-    title: "Data",
+    title: "Inference & model serving",
     skills: [
-      { name: "PostgreSQL", href: "https://www.postgresql.org/", icon: siPostgresql },
-      { name: "Redis", href: "https://redis.io/", icon: siRedis },
-      { name: "Qdrant", href: "https://qdrant.tech/", icon: siQdrant },
+      { name: "vLLM", href: "https://vllm.ai/", icon: siVllm },
+      { name: "TensorRT-LLM", href: "https://github.com/NVIDIA/TensorRT-LLM", icon: siNvidia },
+      { name: "Triton Inference Server", href: "https://github.com/triton-inference-server/server", icon: siNvidia, extra: true },
+      { name: "ONNX Runtime", href: "https://onnxruntime.ai/", icon: siOnnx },
+      { name: "Ray Serve", href: "https://docs.ray.io/en/latest/serve/", icon: siRay },
+      { name: "Quantization", href: "https://huggingface.co/docs/transformers/quantization/overview", icon: siHuggingface, extra: true },
+    ],
+  },
+  {
+    title: "Evaluation & experimentation",
+    skills: [
+      { name: "lm-eval-harness", href: "https://github.com/EleutherAI/lm-evaluation-harness", icon: siGithub },
+      { name: "Weights & Biases", href: "https://wandb.ai/", icon: siWeightsandbiases },
+      { name: "MLflow", href: "https://mlflow.org/", icon: siMlflow },
+      { name: "Arize Phoenix", href: "https://phoenix.arize.com/", icon: siGithub, extra: true },
+      { name: "LangSmith", href: "https://www.langchain.com/langsmith", icon: siLangchain },
+    ],
+  },
+  {
+    title: "Retrieval & knowledge systems",
+    skills: [
+      { name: "FAISS", href: "https://github.com/facebookresearch/faiss", icon: siMeta, extra: true },
+      { name: "Qdrant", href: "https://qdrant.tech/", icon: siQdrant, extra: true },
+      { name: "Weaviate", href: "https://weaviate.io/", icon: siGithub, extra: true },
+      { name: "RAG", href: "https://huggingface.co/docs/transformers/model_doc/rag", icon: siHuggingface, extra: true },
+      { name: "PostgreSQL", href: "https://www.postgresql.org/", icon: siPostgresql, extra: true },
+      { name: "Redis", href: "https://redis.io/", icon: siRedis, extra: true },
+      { name: "MongoDB", href: "https://www.mongodb.com/", icon: siMongodb, extra: true },
       { name: "Neon", href: "https://neon.com/", icon: siNeon, extra: true },
       { name: "Supabase", href: "https://supabase.com/", icon: siSupabase, extra: true },
       { name: "Convex", href: "https://convex.dev/", icon: siConvex, extra: true },
@@ -140,15 +172,33 @@ const skillGroups: { title: string; skills: Skill[] }[] = [
     ],
   },
   {
-    title: "Infrastructure",
+    title: "Agents & AI applications",
     skills: [
-      { name: "AWS", href: "https://aws.amazon.com/", customIcon: FaAws, color: "#FF9900" },
-      { name: "Vercel", href: "https://vercel.com/", icon: siVercel },
-      { name: "Cloudflare", href: "https://www.cloudflare.com/", icon: siCloudflare },
-      { name: "Linux", href: "https://www.linux.org/", icon: siLinux },
-      { name: "Docker", href: "https://www.docker.com/", icon: siDocker },
+      { name: "LangGraph", href: "https://www.langchain.com/langgraph", icon: siLangchain, extra: true },
+      { name: "LlamaIndex", href: "https://www.llamaindex.ai/", icon: siGithub, extra: true },
+      { name: "MCP", href: "https://modelcontextprotocol.io/", icon: siModelcontextprotocol, extra: true },
+      { name: "OpenCV", href: "https://opencv.org/", icon: siOpencv, extra: true },
+      { name: "Whisper", href: "https://github.com/openai/whisper", icon: siGithub, extra: true },
+      { name: "FastAPI", href: "https://fastapi.tiangolo.com/", icon: siFastapi, extra: true },
+      { name: "React", href: "https://react.dev/", icon: siReact, extra: true },
+      { name: "Next.js", href: "https://nextjs.org/", icon: siNextdotjs, extra: true },
+    ],
+  },
+  {
+    title: "Languages & infrastructure",
+    skills: [
+      { name: "Python", href: "https://www.python.org/", icon: siPython, extra: true },
+      { name: "Go", href: "https://go.dev/", icon: siGo, extra: true },
+      { name: "TypeScript", href: "https://www.typescriptlang.org/", icon: siTypescript, extra: true },
+      { name: "JavaScript", href: "https://developer.mozilla.org/en-US/docs/Web/JavaScript", icon: siJavascript, extra: true },
+      { name: "AWS", href: "https://aws.amazon.com/", customIcon: FaAws, color: "#FF9900", extra: true },
+      { name: "Vercel", href: "https://vercel.com/", icon: siVercel, extra: true },
+      { name: "Cloudflare", href: "https://www.cloudflare.com/", icon: siCloudflare, extra: true },
+      { name: "Linux", href: "https://www.linux.org/", icon: siLinux, extra: true },
+      { name: "Docker", href: "https://www.docker.com/", icon: siDocker, extra: true },
       { name: "Kubernetes", href: "https://kubernetes.io/", icon: siKubernetes, extra: true },
       { name: "Azure", href: "https://azure.microsoft.com/", customIcon: TbBrandAzure, color: "#0078D4", extra: true },
+      { name: "GCP", href: "https://cloud.google.com/", icon: siGooglecloud, extra: true },
       { name: "Railway", href: "https://railway.com/", icon: siRailway, extra: true },
       { name: "GitHub", href: "https://github.com/", icon: siGithub, extra: true },
     ],
@@ -193,7 +243,7 @@ function SkillRow({ title, skills, expanded }: { title: string; skills: Skill[];
         <AnimatePresence initial={false} mode="popLayout">
           {visible.map((skill) => (
             <motion.li layout="position" key={skill.name} initial={skill.extra ? { opacity: 0, y: 10, filter: "blur(4px)" } : false} animate={{ opacity: 1, y: 0, filter: "blur(0px)" }} exit={{ opacity: 0, y: -8, filter: "blur(4px)" }} transition={{ duration: 0.22, ease: [0.2, 0, 0, 1] }}>
-              <a className="skill-link" href={skill.href} target="_blank" rel="noreferrer"><BrandIcon skill={skill} /><span>{skill.name}</span></a>
+              <a className="skill-link" href={skill.href} target="_blank" rel="noreferrer">{(skill.icon || skill.customIcon) && <BrandIcon skill={skill} />}<span>{skill.name}</span></a>
             </motion.li>
           ))}
         </AnimatePresence>
@@ -261,7 +311,7 @@ export default function Home() {
           <p>yo, I’m Vivek, an AI engineer based in <span className="dotted-link">Andhra Pradesh</span>, shipping production LLM, RAG, and computer-vision systems for government at scale.</p>
           <p>So far, I’ve cut prosecutor review time by <strong>60%</strong>, shipped real-time face recognition across a <strong>2,000-camera</strong> network, and built an enforcement pipeline that detected <strong>2,000+ violations</strong> in six hours.</p>
         </div>
-        <div className="cta-row"><span className="cta-note" aria-hidden="true">let’s build</span><a className="button button-primary" href="mailto:vivekvarikuti22@gmail.com">Email me</a><a className="button button-secondary" href="https://github.com/vivekvar-dl" target="_blank" rel="noreferrer">View GitHub <FaGithub size={14} aria-hidden="true" /></a></div>
+        <div className="cta-row"><span className="cta-note" aria-hidden="true">let’s build</span><a className="button button-primary" href="mailto:vivekvarikuti22@gmail.com">Email me</a><a className="button button-secondary" href="https://github.com/vivekvar-dl" target="_blank" rel="noreferrer">View GitHub <FaGithub size={14} aria-hidden="true" /></a><Link className="button button-secondary" href="/blog">Blog <ArrowUpRight size={14} aria-hidden="true" /></Link></div>
       </section>
 
       <section className="section-block" aria-labelledby="performance-heading">
@@ -278,7 +328,7 @@ export default function Home() {
 
       <section className="section-block" aria-labelledby="skills-heading">
         <div className="section-heading"><h2 id="skills-heading">Skills</h2><SectionToggle expanded={skillsExpanded} onClick={() => setSkillsExpanded((value) => !value)} controls="skills-content" /></div>
-        <div id="skills-content" className="skills-grid">{skillGroups.map((group) => <SkillRow key={group.title} {...group} expanded={skillsExpanded} />)}</div>
+        <div id="skills-content" className="skills-grid">{skillGroups.filter((group) => skillsExpanded || group.skills.some((skill) => !skill.extra)).map((group) => <SkillRow key={group.title} {...group} expanded={skillsExpanded} />)}</div>
       </section>
 
       <section className="section-block" aria-labelledby="projects-heading">
@@ -297,7 +347,7 @@ export default function Home() {
       </section>
 
       <motion.footer className="signature-wrap" initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0.15 }} animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }} whileHover={{ scale: 1.015, rotate: -0.25 }} transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}>
-        <img className="signature-image" src="/signature.svg" alt="V Sara Vivek signature" />
+        <Image className="signature-image" src="/signature.svg" alt="V Sara Vivek signature" width={1897} height={632} />
       </motion.footer>
     </main>
   );
