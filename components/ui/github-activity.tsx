@@ -119,6 +119,8 @@ type GitHubActivityResponse = {
   contributions: Contribution[];
   repos: RepoContribution[];
   stars: number;
+  pullRequests: number;
+  contributedRepos: number;
 };
 
 async function fetchGitHubActivity(login: string): Promise<GitHubActivityResponse | null> {
@@ -132,6 +134,8 @@ function useGitHubUser(login?: string) {
     contributions: Contribution[];
     repos: RepoContribution[];
     stars: number;
+    pullRequests: number;
+    contributedRepos: number;
   }>();
 
   React.useEffect(() => {
@@ -507,6 +511,9 @@ const GitHubActivity = ({
     : (fetched?.contributions ?? placeholder);
   const repos = reposProp.length ? reposProp : (fetched?.repos ?? []);
   const stars = starsProp ?? fetched?.stars;
+  const contributionLabel = fetched
+    ? `Open-source contributions · ${fetched.pullRequests} PRs across ${fetched.contributedRepos} repos`
+    : label;
 
   const scale = React.useMemo(() => toScale(accent), [accent]);
   const transition = reduceMotion ? { duration: 0 } : SPRING;
@@ -583,7 +590,7 @@ const GitHubActivity = ({
             transition={headerTransition}
             className="flex items-center justify-between gap-3 py-3 px-4"
           >
-            <span className="truncate text-sm text-foreground">{label}</span>
+            <span className="truncate text-sm text-foreground">{contributionLabel}</span>
 
             <div className="flex items-center gap-3">
               {!open && (
@@ -633,6 +640,18 @@ const GitHubActivity = ({
                     />
                   </li>
                 ))}
+                {username && (
+                  <li>
+                    <a
+                      href={`https://github.com/search?q=${encodeURIComponent(`type:pr author:${username}`)}&type=pullrequests`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mx-2 flex min-h-10 items-center px-2 text-xs font-medium text-foreground/55 transition-colors hover:text-foreground"
+                    >
+                      View all public pull requests
+                    </a>
+                  </li>
+                )}
               </motion.ul>
             )}
           </AnimatePresence>

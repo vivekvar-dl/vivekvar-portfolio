@@ -120,9 +120,19 @@ export async function GET(request: Request) {
         logoUrl: `https://github.com/${owner}.png?size=64`,
       };
     });
+  const pullRequests = [...contributionRepos.values()].reduce(
+    (total, contribution) => total + contribution.count,
+    0,
+  );
 
   return Response.json(
-    { contributions, repos, stars },
+    {
+      contributions,
+      repos,
+      stars,
+      pullRequests,
+      contributedRepos: contributionRepos.size,
+    },
     {
       headers: {
         "Cache-Control": "public, s-maxage=3600, stale-while-revalidate=86400",
