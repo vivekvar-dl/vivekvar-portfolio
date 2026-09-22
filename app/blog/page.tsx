@@ -20,7 +20,7 @@ export default async function BlogPage() {
   return (
     <main className="blog-shell">
       <nav className="blog-topnav"><Link href="/"><ArrowLeft size={13} />Portfolio</Link></nav>
-      <figure className="blog-banner"><Image src="/blog-banner.png" alt="Abstract white particle field on black" width={2172} height={724} priority /></figure>
+      <figure className="blog-banner"><Image src="/blog-banner.webp" alt="Abstract white particle field on black" width={1600} height={533} priority /></figure>
       <header className="blog-identity"><div><h1>Blog</h1><p>Research, systems, and things learned while building.</p></div></header>
       <div className="blog-intro"><p>I write about model research, post-training, inference, retrieval, and the engineering details that decide whether an AI system works outside a notebook.</p></div>
       <section className="blog-list" aria-labelledby="blog-heading">

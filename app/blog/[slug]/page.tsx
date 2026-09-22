@@ -7,6 +7,8 @@ import rehypeKatex from "rehype-katex";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
 import remarkMath from "remark-math";
+// Bundled with its fonts and loaded only on article pages, the only place math renders.
+import "katex/dist/katex.min.css";
 
 import { fieldNotes } from "@/lib/field-notes";
 import { getPostBySlug } from "@/lib/posts";

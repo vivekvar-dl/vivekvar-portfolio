@@ -6,9 +6,9 @@ type Env = { CF_VERSION_METADATA?: { id: string } };
 
 // Page renders cost 60-700ms CPU (markdown + KaTeX), which trips Error 1102 on the Workers CPU limit.
 // Content only changes on deploy, so cache each render at the edge, keyed by Worker version.
-// ponytail: /admin and /api skip the cache; if public pages ever become per-user, key on the session too.
+// ponytail: /admin and /api/admin skip the cache; if public pages ever become per-user, key on the session too.
 const EDGE_TTL_SECONDS = 60 * 60 * 24;
-const UNCACHED = /^\/(api|admin|signin|signout)/;
+const UNCACHED = /^\/(api\/admin|admin|signin|signout)/;
 const ROUTER_HEADER = /^(rsc|next-|x-vinext-)/;
 
 const worker = {
@@ -31,7 +31,10 @@ const worker = {
 
     const cacheable = new Response(response.body, response);
     // s-maxage is for the edge; browsers still revalidate so a deploy is visible immediately.
-    cacheable.headers.set("Cache-Control", `public, max-age=0, must-revalidate, s-maxage=${EDGE_TTL_SECONDS}`);
+    // Routes that set their own s-maxage (the GitHub activity API) keep it.
+    if (!cacheable.headers.get("Cache-Control")?.includes("s-maxage")) {
+      cacheable.headers.set("Cache-Control", `public, max-age=0, must-revalidate, s-maxage=${EDGE_TTL_SECONDS}`);
+    }
     ctx.waitUntil(cache.put(key.toString(), cacheable.clone()));
     return cacheable;
   },

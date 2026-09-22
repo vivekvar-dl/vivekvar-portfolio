@@ -23,9 +23,6 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={GeistSans.variable} suppressHydrationWarning>
-      {/* KaTeX is served with its bundled fonts from /public to avoid external requests. */}
-      {/* eslint-disable-next-line @next/next/no-css-tags */}
-      <head><link rel="stylesheet" href="/katex/katex.min.css" /></head>
       <body className="antialiased"><ThemeProvider>{children}<ThemeToggle /></ThemeProvider></body>
     </html>
   );
