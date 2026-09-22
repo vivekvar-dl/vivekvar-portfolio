@@ -72,7 +72,7 @@ type Skill = {
 
 const socials = [
   { label: "GitHub", href: "https://github.com/vivekvar-dl", icon: FaGithub },
-  { label: "LinkedIn", href: "https://www.linkedin.com/in/vivekvar", icon: FaLinkedinIn },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/vivek-vari/", icon: FaLinkedinIn },
   { label: "Email", href: "mailto:vivekvarikuti22@gmail.com", icon: Mail },
   { label: "Website", href: "https://vivekvari.dev", icon: Globe2 },
   { label: "Phone", href: "tel:+919618934336", icon: Phone },
@@ -308,8 +308,8 @@ export default function Home() {
       <section className="hero" aria-label="Introduction">
         <div className="identity-row"><div><h1>V Sara Vivek</h1><p>AI engineer</p></div><nav aria-label="Social links"><ul>{socials.map((social) => <SocialLink key={social.label} {...social} />)}</ul></nav></div>
         <div className="intro-copy">
-          <p>yo, I’m Vivek, an AI engineer based in <span className="dotted-link">Andhra Pradesh</span>, shipping production LLM, RAG, and computer-vision systems for government at scale.</p>
-          <p>So far, I’ve cut prosecutor review time by <strong>60%</strong>, shipped real-time face recognition across a <strong>2,000-camera</strong> network, and built an enforcement pipeline that detected <strong>2,000+ violations</strong> in six hours.</p>
+          <p>I’m Vivek, an AI engineer based in <span className="dotted-link">Andhra Pradesh</span>. I design and deploy production LLM, retrieval, and computer-vision systems for large-scale public-sector applications.</p>
+          <p>My work has reduced prosecutor review time by <strong>60%</strong>, supported real-time face recognition across a <strong>2,000-camera</strong> network, and identified more than <strong>2,000 traffic violations</strong> in a six-hour deployment.</p>
         </div>
         <div className="cta-row"><span className="cta-note" aria-hidden="true">let’s build</span><a className="button button-primary" href="mailto:vivekvarikuti22@gmail.com">Email me</a><a className="button button-secondary" href="https://github.com/vivekvar-dl" target="_blank" rel="noreferrer">View GitHub <FaGithub size={14} aria-hidden="true" /></a><Link className="button button-secondary" href="/blog">Blog <ArrowUpRight size={14} aria-hidden="true" /></Link></div>
       </section>
@@ -317,7 +317,6 @@ export default function Home() {
       <section className="section-block" aria-labelledby="performance-heading">
         <div className="section-heading"><h2 id="performance-heading">Performance</h2></div>
         <GitHubActivity username="vivekvar-dl" accent={["#d6d6d6", "#a8a8a8", "#6f6f6f", "#171717"]} cellSize={10} months={12} showMonths label="Top contributions in:" className="activity-card" style={{ width: "100%" }} />
-        <a className="rareui-credit" href="https://www.rareui.com/components/githubactivity" target="_blank" rel="noreferrer">GitHub activity by Rare UI <ArrowUpRight size={11} aria-hidden="true" /></a>
       </section>
 
       <section className="section-block" aria-labelledby="experience-heading">
