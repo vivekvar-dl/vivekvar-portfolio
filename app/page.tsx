@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
-  BriefcaseBusiness,
   ChevronDown,
   Globe2,
   GraduationCap,
@@ -84,7 +83,7 @@ const jobs = [
     role: "Lead AI engineer",
     date: "Aug 25 – Now",
     location: "Andhra Pradesh",
-    icon: Sparkles,
+    logoUrl: "https://4sightai.com/images/logo-final.png",
     bullets: [
       "Shipped a POCSO compliance system using RAG over 1,000+ legal documents, generating citation-backed scorecards and evidence-gap reports in under five minutes per case.",
       "Built the FastAPI backend and human-in-the-loop validation flow, cutting hallucinations by 40% and prosecutor review time by 60%.",
@@ -97,7 +96,7 @@ const jobs = [
     role: "Machine learning intern",
     date: "Dec 24 – Feb 25",
     location: "On-site",
-    icon: BriefcaseBusiness,
+    logoUrl: "https://ggsinc.com/wp-content/uploads/2019/05/ggs-logo.png",
     bullets: [
       "Built production 3D mesh-compression algorithms with 60% size reduction while retaining 95% geometric accuracy for 15+ enterprise clients.",
       "Developed a 2D-to-3D conversion pipeline that processed 500+ STEP files daily and reduced manual CAD work by 70%.",
@@ -260,15 +259,21 @@ function SectionToggle({ expanded, onClick, controls, className }: { expanded: b
   );
 }
 
+function CompanyMark({ company, logoUrl }: { company: string; logoUrl: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img className="company-logo" src={logoUrl} alt={`${company} logo`} />
+  );
+}
+
 function CompactExperience() {
   return (
     <ol className="experience-timeline" aria-label="Career timeline">
       {jobs.map((job, index) => {
-        const Icon = job.icon;
         return (
           <li key={job.company}>
             <div className="timeline-line" aria-hidden="true"><span className={cn("timeline-dot", index === 0 && "timeline-dot-current")} /></div>
-            <div className="timeline-role"><span className="mini-icon"><Icon size={14} strokeWidth={1.5} /></span><span>{job.company}</span></div>
+            <div className="timeline-role"><span className="mini-icon"><CompanyMark company={job.company} logoUrl={job.logoUrl} /></span><span>{job.company}</span></div>
             <p>{job.date}</p>
           </li>
         );
@@ -282,12 +287,11 @@ function ExpandedExperience({ mobile }: { mobile?: boolean }) {
   return (
     <ol className={cn("experience-details", mobile && "experience-mobile")}>
       {jobs.map((job, index) => {
-        const Icon = job.icon;
         const open = !mobile || openJob === index;
         return (
           <li key={job.company}>
             <button type="button" className="job-heading" onClick={() => mobile && setOpenJob(open ? null : index)} aria-expanded={mobile ? open : undefined}>
-              <span className="job-identity"><span className="job-icon"><Icon size={16} strokeWidth={1.45} /></span><span><strong>{job.company}</strong><span>{job.role}</span></span></span>
+              <span className="job-identity"><span className="job-icon"><CompanyMark company={job.company} logoUrl={job.logoUrl} /></span><span><strong>{job.company}</strong><span>{job.role}</span></span></span>
               <span className="job-date">{job.date} <span aria-hidden="true">·</span> {job.location}{mobile && <ChevronDown className={cn("job-chevron", open && "rotate-180")} size={13} />}</span>
             </button>
             <AnimatePresence initial={false}>
@@ -316,7 +320,7 @@ export default function Home() {
 
       <section className="section-block" aria-labelledby="performance-heading">
         <div className="section-heading"><h2 id="performance-heading">Performance</h2></div>
-        <GitHubActivity username="vivekvar-dl" accent={["#d6d6d6", "#a8a8a8", "#6f6f6f", "#171717"]} cellSize={10} months={12} showMonths label="Top contributions in:" className="activity-card" style={{ width: "100%" }} />
+        <GitHubActivity username="vivekvar-dl" accent={["var(--contribution-l1)", "var(--contribution-l2)", "var(--contribution-l3)", "var(--contribution-l4)"]} cellSize={10} months={12} showMonths label="Open-source contributions:" className="activity-card" style={{ width: "100%" }} />
       </section>
 
       <section className="section-block" aria-labelledby="experience-heading">

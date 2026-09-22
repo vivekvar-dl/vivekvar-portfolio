@@ -22,12 +22,14 @@ export type RepoContribution = {
   name: string;
   count: number;
   logo?: React.ReactNode;
+  logoUrl?: string;
   href?: string;
+  unit?: string;
 };
 
 const DEFAULT_ACCENT = "#39d353";
 const DEFAULT_CELL_SIZE = 11;
-const DEFAULT_LABEL = "Top contributions in:";
+const DEFAULT_LABEL = "Open-source contributions:";
 const DEFAULT_MONTHS = 12;
 const WEEKS_PER_MONTH = 365.25 / 12 / 7;
 const STACK_LIMIT = 3;
@@ -113,80 +115,32 @@ function describeDay({ count, date }: Contribution) {
   return `${count} ${noun} on ${DATE_FORMAT.format(new Date(`${date}T00:00:00`))}`;
 }
 
-const CALENDAR_API = "https://github-contributions-api.jogruber.de/v4";
-const EVENTS_API = "https://api.github.com/users";
-
-type ApiDay = { date: string; count: number; level: number };
-type PushEvent = {
-  type: string;
-  repo?: { name: string };
-  payload?: { commits?: unknown[] };
+type GitHubActivityResponse = {
+  contributions: Contribution[];
+  repos: RepoContribution[];
+  stars: number;
 };
 
-async function fetchCalendar(login: string) {
-  const res = await fetch(`${CALENDAR_API}/${login}?y=last`);
+async function fetchGitHubActivity(login: string): Promise<GitHubActivityResponse | null> {
+  const res = await fetch(`/api/github/activity?username=${encodeURIComponent(login)}`);
   if (!res.ok) return null;
-
-  const days: ApiDay[] = (await res.json())?.contributions ?? [];
-  if (!days.length) return null;
-
-  // columns are weeks, so the first day has to be a sunday or every column shears
-  const start = days.findIndex(
-    (day) => new Date(`${day.date}T00:00:00Z`).getUTCDay() === 0,
-  );
-
-  return days.slice(start < 0 ? 0 : start).map<Contribution>((day) => ({
-    date: day.date,
-    count: day.count,
-    level: Math.min(4, Math.max(0, day.level)) as ContributionLevel,
-  }));
-}
-
-async function fetchRepos(login: string): Promise<RepoContribution[]> {
-  const res = await fetch(`${EVENTS_API}/${login}/events/public?per_page=100`);
-  if (!res.ok) return [];
-
-  const events: PushEvent[] = await res.json();
-  const counts = new Map<string, number>();
-
-  for (const event of events) {
-    if (event.type !== "PushEvent" || !event.repo) continue;
-    const commits = event.payload?.commits?.length ?? 1;
-    counts.set(event.repo.name, (counts.get(event.repo.name) ?? 0) + commits);
-  }
-
-  return [...counts.entries()]
-    .sort(([, a], [, b]) => b - a)
-    .slice(0, STACK_LIMIT)
-    .map(([fullName, count]) => {
-      const [owner, name] = fullName.split("/");
-      return {
-        name,
-        count,
-        href: `https://github.com/${fullName}`,
-        // github has no repo logo, only an owner avatar, so own repos use the initial
-        logo:
-          owner.toLowerCase() === login.toLowerCase() ? undefined : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={`https://github.com/${owner}.png?size=64`} alt="" />
-          ),
-      };
-    });
+  return res.json();
 }
 
 function useGitHubUser(login?: string) {
   const [data, setData] = React.useState<{
     contributions: Contribution[];
     repos: RepoContribution[];
+    stars: number;
   }>();
 
   React.useEffect(() => {
     if (!login) return;
     let active = true;
 
-    Promise.all([fetchCalendar(login), fetchRepos(login)])
-      .then(([contributions, repos]) => {
-        if (active && contributions) setData({ contributions, repos });
+    fetchGitHubActivity(login)
+      .then((activity) => {
+        if (active && activity) setData(activity);
       })
       .catch(() => {});
 
@@ -429,7 +383,13 @@ const Avatar = ({
       className,
     )}
   >
-    {repo.logo ?? repo.name.charAt(0)}
+    {repo.logo ??
+      (repo.logoUrl ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={repo.logoUrl} alt="" />
+      ) : (
+        repo.name.charAt(0)
+      ))}
   </motion.span>
 );
 
@@ -452,7 +412,7 @@ const RepoRow = ({
         {repo.name}
       </span>
       <span className="text-sm tabular-nums text-foreground/70">
-        {repo.count}
+        {repo.count}{repo.unit ? ` ${repo.unit}` : ""}
       </span>
     </>
   );
@@ -495,6 +455,7 @@ export type GitHubActivityProps = React.ComponentProps<"div"> & {
   username?: string;
   contributions?: Contribution[];
   repos?: RepoContribution[];
+  stars?: number;
   year?: number;
   accent?: string | string[];
   cellSize?: number;
@@ -511,6 +472,7 @@ const GitHubActivity = ({
   username,
   contributions: contributionsProp = [],
   repos: reposProp = [],
+  stars: starsProp,
   year,
   accent = DEFAULT_ACCENT,
   cellSize = DEFAULT_CELL_SIZE,
@@ -544,6 +506,7 @@ const GitHubActivity = ({
     ? contributionsProp
     : (fetched?.contributions ?? placeholder);
   const repos = reposProp.length ? reposProp : (fetched?.repos ?? []);
+  const stars = starsProp ?? fetched?.stars;
 
   const scale = React.useMemo(() => toScale(accent), [accent]);
   const transition = reduceMotion ? { duration: 0 } : SPRING;
@@ -581,15 +544,19 @@ const GitHubActivity = ({
       data-slot="github-activity"
       className={cn(
         "relative max-w-full overflow-hidden rounded-[28px] bg-white p-4 dark:bg-black",
-        repos.length > 0 && "pb-[76px]",
         className,
       )}
       style={{ width, ...style }}
       {...props}
     >
-      <p className="mb-4 text-base font-medium text-foreground px-1.5">
-        {heading}
-      </p>
+      <div className="mb-4 flex items-center justify-between gap-3 px-1.5">
+        <p className="text-base font-medium text-foreground">{heading}</p>
+        {typeof stars === "number" && (
+          <p className="shrink-0 text-xs tabular-nums text-foreground/50">
+            {stars} {stars === 1 ? "star" : "stars"}
+          </p>
+        )}
+      </div>
 
       <ContributionGrid
         contributions={contributions}
@@ -607,10 +574,7 @@ const GitHubActivity = ({
           id={`${uid}-panel`}
           data-slot="github-activity-panel"
           data-state={open ? "open" : "closed"}
-          className={cn(
-            "absolute inset-x-3 bottom-3 overflow-hidden bg-card/90 backdrop-blur-xl",
-            open && "top-3",
-          )}
+          className="mt-3 overflow-hidden bg-card/90 backdrop-blur-xl"
           style={{ borderRadius: 18 }}
           transition={transition}
         >
