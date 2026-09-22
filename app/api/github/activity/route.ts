@@ -116,7 +116,6 @@ export async function GET(request: Request) {
         name: fullName,
         count: contribution.count,
         unit: contribution.count === 1 ? "PR" : "PRs",
-        href: `https://github.com/${fullName}/pulls?q=is%3Apr+author%3A${encodeURIComponent(username)}`,
         logoUrl: `https://github.com/${owner}.png?size=64`,
       };
     });

@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "motion/react";
 import {
   ArrowUpRight,
   ChevronDown,
-  Globe2,
   GraduationCap,
   Mail,
   MapPin,
@@ -73,7 +72,6 @@ const socials = [
   { label: "GitHub", href: "https://github.com/vivekvar-dl", icon: FaGithub },
   { label: "LinkedIn", href: "https://www.linkedin.com/in/vivek-vari/", icon: FaLinkedinIn },
   { label: "Email", href: "mailto:vivekvarikuti22@gmail.com", icon: Mail },
-  { label: "Website", href: "https://vivekvari.dev", icon: Globe2 },
   { label: "Phone", href: "tel:+919618934336", icon: Phone },
 ];
 
@@ -83,7 +81,7 @@ const jobs = [
     role: "Lead AI engineer",
     date: "Aug 25 – Now",
     location: "Andhra Pradesh",
-    logoUrl: "https://4sightai.com/images/logo-final.png",
+    logoUrl: "https://4sightai.com/images/robot-head.png",
     bullets: [
       "Shipped a POCSO compliance system using RAG over 1,000+ legal documents, generating citation-backed scorecards and evidence-gap reports in under five minutes per case.",
       "Built the FastAPI backend and human-in-the-loop validation flow, cutting hallucinations by 40% and prosecutor review time by 60%.",
@@ -96,7 +94,7 @@ const jobs = [
     role: "Machine learning intern",
     date: "Dec 24 – Feb 25",
     location: "On-site",
-    logoUrl: "https://ggsinc.com/wp-content/uploads/2019/05/ggs-logo.png",
+    logoUrl: "https://ggsinc.com/wp-content/uploads/2019/05/logo.png",
     bullets: [
       "Built production 3D mesh-compression algorithms with 60% size reduction while retaining 95% geometric accuracy for 15+ enterprise clients.",
       "Developed a 2D-to-3D conversion pipeline that processed 500+ STEP files daily and reduced manual CAD work by 70%.",

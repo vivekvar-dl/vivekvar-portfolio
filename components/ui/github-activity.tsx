@@ -23,7 +23,6 @@ export type RepoContribution = {
   count: number;
   logo?: React.ReactNode;
   logoUrl?: string;
-  href?: string;
   unit?: string;
 };
 
@@ -406,8 +405,7 @@ const RepoRow = ({
   layoutId: string;
   transition: Transition;
 }) => {
-  const className =
-    "flex items-center gap-3 rounded-xl mx-2 px-2 py-2 transition-colors hover:bg-foreground/5";
+  const className = "flex items-center gap-3 rounded-xl mx-2 px-2 py-2";
 
   const content = (
     <>
@@ -421,13 +419,7 @@ const RepoRow = ({
     </>
   );
 
-  return repo.href ? (
-    <a href={repo.href} target="_blank" rel="noreferrer" className={className}>
-      {content}
-    </a>
-  ) : (
-    <div className={className}>{content}</div>
-  );
+  return <div className={className}>{content}</div>;
 };
 
 const Chevron = ({
@@ -640,18 +632,6 @@ const GitHubActivity = ({
                     />
                   </li>
                 ))}
-                {username && (
-                  <li>
-                    <a
-                      href={`https://github.com/search?q=${encodeURIComponent(`type:pr author:${username}`)}&type=pullrequests`}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mx-2 flex min-h-10 items-center px-2 text-xs font-medium text-foreground/55 transition-colors hover:text-foreground"
-                    >
-                      View all public pull requests
-                    </a>
-                  </li>
-                )}
               </motion.ul>
             )}
           </AnimatePresence>

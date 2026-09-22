@@ -145,7 +145,8 @@ button { font: inherit; }
 .timeline-role { display: flex; margin-top: 0.3rem; align-items: center; gap: 0.55rem; color: #444; font-size: 0.875rem; }
 .mini-icon, .job-icon, .project-icon, .education-icon { display: grid; flex: 0 0 auto; place-items: center; color: #575757; background: #f7f7f7; box-shadow: var(--shadow-border); }
 .mini-icon { inline-size: 1.65rem; block-size: 1.65rem; border-radius: 0.45rem; }
-.company-logo { display: block; width: calc(100% - 0.38rem); height: calc(100% - 0.38rem); object-fit: contain; }
+.mini-icon:has(.company-logo), .job-icon:has(.company-logo) { background: #fff; box-shadow: 0 0 0 1px oklch(0 0 0 / 0.1), 0 1px 2px oklch(0 0 0 / 0.05); }
+.company-logo { display: block; width: calc(100% - 0.3rem); height: calc(100% - 0.3rem); object-fit: contain; }
 .experience-timeline p { margin: 0.32rem 0 0; color: #7a7a7a; font-size: 0.8125rem; font-variant-numeric: tabular-nums; }
 
 .experience-details { display: flex; margin: 0; padding: 0; flex-direction: column; gap: 1.3rem; list-style: none; }
@@ -500,6 +501,7 @@ button { font: inherit; }
 .dark .timeline-dot { background: #5f6368; box-shadow: 0 0 0 4px #0d0e10; }
 .dark .timeline-dot-current { background: #eee; box-shadow: 0 0 0 3px #0d0e10, 0 0 0 4px #45494e; }
 .dark .mini-icon, .dark .job-icon, .dark .project-icon, .dark .education-icon { color: #b0b3b7; background: #15171a; }
+.dark .mini-icon:has(.company-logo), .dark .job-icon:has(.company-logo) { background: #fff; box-shadow: 0 0 0 1px oklch(1 0 0 / 0.1), 0 1px 2px oklch(0 0 0 / 0.32); }
 .dark .skill-link { color: #b9bcc0; }
 .dark .signature-image { opacity: 0.08; filter: invert(1); }
 .dark .blog-identity { border-bottom-color: #292c30; }
