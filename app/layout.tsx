@@ -5,15 +5,17 @@ import { ThemeToggle } from "@/components/theme-toggle";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://vivekvar-portfolio.vivekvarrrr.chatgpt.site"),
+  metadataBase: new URL("https://vivekvari.tech"),
   title: "V Sara Vivek — AI Engineer",
   description: "AI engineer building production LLM, RAG, and computer-vision systems at government scale.",
-  icons: { icon: "/favicon.svg", shortcut: "/favicon.svg" },
+  icons: { icon: { url: "/favicon.svg", type: "image/svg+xml" } },
   openGraph: {
     title: "V Sara Vivek — AI Engineer",
     description: "AI engineer building production LLM, RAG, and computer-vision systems at government scale.",
     type: "website",
-    images: [{ url: "/og.png", width: 1730, height: 909, alt: "V Sara Vivek — AI Engineer" }],
+    url: "/",
+    siteName: "V Sara Vivek",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "V Sara Vivek — AI Engineer" }],
   },
   twitter: { card: "summary_large_image", title: "V Sara Vivek — AI Engineer", description: "LLM systems, computer vision, and technical field notes.", images: ["/og.png"] },
 };
