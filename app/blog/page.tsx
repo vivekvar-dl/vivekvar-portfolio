@@ -1,5 +1,6 @@
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 import { fieldNotes } from "@/lib/field-notes";
@@ -18,7 +19,9 @@ export default async function BlogPage() {
 
   return (
     <main className="blog-shell">
-      <header className="blog-identity"><div><h1>Blog</h1><p>Research, systems, and things learned while building.</p></div><Link href="/"><ArrowLeft size={13} />Portfolio</Link></header>
+      <nav className="blog-topnav"><Link href="/"><ArrowLeft size={13} />Portfolio</Link></nav>
+      <figure className="blog-banner"><Image src="/blog-banner.png" alt="Abstract white particle field on black" width={2172} height={724} priority /></figure>
+      <header className="blog-identity"><div><h1>Blog</h1><p>Research, systems, and things learned while building.</p></div></header>
       <div className="blog-intro"><p>I write about model research, post-training, inference, retrieval, and the engineering details that decide whether an AI system works outside a notebook.</p></div>
       <section className="blog-list" aria-labelledby="blog-heading">
         <div className="section-heading"><h2 id="blog-heading">Writing</h2><span>{notes.length} posts</span></div>
