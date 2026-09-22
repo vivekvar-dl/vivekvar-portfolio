@@ -1,3 +1,6 @@
+import creditAssignmentArticle from "@/content/blog/credit-assignment-rl-x-article.md?raw";
+import gramragArticle from "@/content/blog/gramrag-tapo-explainer.md?raw";
+
 export type FieldNote = {
   slug: string;
   title: string;
@@ -9,7 +12,29 @@ export type FieldNote = {
   date: string;
 };
 
+const withoutTitle = (article: string) => article.replace(/^# .+\n+/, "");
+
 export const fieldNotes: FieldNote[] = [
+  {
+    slug: "credit-assignment-is-the-whole-game",
+    title: "Credit Assignment Is the Whole Game: A Modern Map of Reinforcement Learning from Pong to Post-Training",
+    excerpt: "A researcher-engineer guide to policy gradients, PPO, GRPO, RLOO, process rewards, and tool-use RL through the lens of credit assignment.",
+    imageUrl: "/credit-assignment-rl-cover.jpg",
+    topic: "REINFORCEMENT LEARNING",
+    readTime: "22 min",
+    date: "2026-09-22",
+    content: withoutTitle(creditAssignmentArticle),
+  },
+  {
+    slug: "gramrag-topology-aware-policy-optimization",
+    title: "When Your Multimodal RAG Team Punishes Good Retrieval: GraMRAG and Topology-Aware Policy Optimization",
+    excerpt: "How graph memory and topology-aware policy optimization assign credit across long-horizon multimodal retrieval trajectories.",
+    imageUrl: "/gramrag-tapo-cover.jpg",
+    topic: "MULTIMODAL RAG",
+    readTime: "12 min",
+    date: "2026-09-22",
+    content: withoutTitle(gramragArticle),
+  },
   {
     slug: "multilingual-tokenization-without-shortcuts",
     title: "Multilingual tokenization without shortcuts",
