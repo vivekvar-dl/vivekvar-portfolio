@@ -405,10 +405,16 @@ const RepoRow = ({
   layoutId: string;
   transition: Transition;
 }) => {
-  const className = "flex items-center gap-3 rounded-xl mx-2 px-2 py-2";
+  const className =
+    "flex items-center gap-3 rounded-xl mx-2 px-2 py-2 transition-colors hover:bg-foreground/5 focus-visible:bg-foreground/5";
 
-  const content = (
-    <>
+  return (
+    <a
+      href={`https://github.com/${repo.name}`}
+      target="_blank"
+      rel="noreferrer"
+      className={className}
+    >
       <Avatar repo={repo} layoutId={layoutId} transition={transition} />
       <span className="flex-1 truncate text-sm text-foreground">
         {repo.name}
@@ -416,10 +422,8 @@ const RepoRow = ({
       <span className="text-sm tabular-nums text-foreground/70">
         {repo.count}{repo.unit ? ` ${repo.unit}` : ""}
       </span>
-    </>
+    </a>
   );
-
-  return <div className={className}>{content}</div>;
 };
 
 const Chevron = ({
