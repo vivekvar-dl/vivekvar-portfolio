@@ -260,7 +260,7 @@ function SectionToggle({ expanded, onClick, controls, className }: { expanded: b
 
 function CompanyMark({ company, logoUrl }: { company: string; logoUrl: string }) {
   const [failed, setFailed] = useState(false);
-  if (failed) return <Building2 size={14} strokeWidth={1.5} aria-label={company} />;
+  if (failed) return <Building2 size={14} strokeWidth={1.5} aria-hidden="true" />;
   return (
     // eslint-disable-next-line @next/next/no-img-element
     <img
