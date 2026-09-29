@@ -376,25 +376,28 @@ const Avatar = ({
   layoutId: string;
   transition: Transition;
   className?: string;
-}) => (
-  <motion.span
-    layoutId={layoutId}
-    transition={transition}
-    className={cn(
-      "grid size-7 shrink-0 place-items-center overflow-hidden rounded-full bg-neutral-200 text-[11px] font-medium uppercase text-foreground/70 ring-2 ring-background dark:bg-neutral-800",
-      "[&_img]:size-full [&_img]:object-cover [&_svg]:size-full",
-      className,
-    )}
-  >
-    {repo.logo ??
-      (repo.logoUrl ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={repo.logoUrl} alt="" />
-      ) : (
-        repo.name.charAt(0)
-      ))}
-  </motion.span>
-);
+}) => {
+  const [failed, setFailed] = React.useState(false);
+  return (
+    <motion.span
+      layoutId={layoutId}
+      transition={transition}
+      className={cn(
+        "grid size-7 shrink-0 place-items-center overflow-hidden rounded-full bg-neutral-200 text-[11px] font-medium uppercase text-foreground/70 ring-2 ring-background dark:bg-neutral-800",
+        "[&_img]:size-full [&_img]:object-cover [&_svg]:size-full",
+        className,
+      )}
+    >
+      {repo.logo ??
+        (repo.logoUrl && !failed ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img src={repo.logoUrl} alt="" onError={() => setFailed(true)} />
+        ) : (
+          repo.name.charAt(0)
+        ))}
+    </motion.span>
+  );
+};
 
 const RepoRow = ({
   repo,

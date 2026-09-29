@@ -116,7 +116,7 @@ export async function GET(request: Request) {
         name: fullName,
         count: contribution.count,
         unit: contribution.count === 1 ? "PR" : "PRs",
-        logoUrl: `https://github.com/${owner}.png?size=64`,
+        logoUrl: `https://avatars.githubusercontent.com/${owner}?size=64`,
       };
     });
   const pullRequests = [...contributionRepos.values()].reduce(
