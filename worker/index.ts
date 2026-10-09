@@ -6,9 +6,9 @@ type Env = { CF_VERSION_METADATA?: { id: string } };
 
 // Page renders cost 60-700ms CPU (markdown + KaTeX), which trips Error 1102 on the Workers CPU limit.
 // Content only changes on deploy, so cache each render at the edge, keyed by Worker version.
-// ponytail: /admin and /api/admin skip the cache; if public pages ever become per-user, key on the session too.
+// ponytail: admin and the guestbook (written by visitors) skip the cache; if public pages ever become per-user, key on the session too.
 const EDGE_TTL_SECONDS = 60 * 60 * 24;
-const UNCACHED = /^\/(api\/admin|admin|signin|signout)/;
+const UNCACHED = /^\/(api\/admin|admin|signin|signout|guestbook|api\/guestbook)/;
 const ROUTER_HEADER = /^(rsc|next-|x-vinext-)/;
 
 // The zone's Browser Cache TTL (4h) rewrites a low max-age upward, so browsers would keep a page from

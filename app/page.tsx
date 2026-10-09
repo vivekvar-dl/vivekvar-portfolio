@@ -55,6 +55,8 @@ import {
   siWeightsandbiases,
 } from "simple-icons";
 
+import { GuestbookSection } from "@/components/guestbook";
+import { KoiPond } from "@/components/koi-pond";
 import { GitHubActivity } from "@/components/ui/github-activity";
 import { cn } from "@/lib/utils";
 
@@ -307,6 +309,7 @@ export default function Home() {
   const [skillsExpanded, setSkillsExpanded] = useState(false);
   return (
     <main className="page-shell">
+      <motion.div initial={{ opacity: 0, scale: 1.1, filter: "blur(20px)" }} animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }} transition={{ duration: 0.9, ease: [0.2, 0, 0, 1] }}><KoiPond className="koi-pond" /><p className="pond-credit">Koi photos by Martin Kammerer (<a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noreferrer">CC BY-SA 4.0</a>, <a href="/pond/CREDITS.txt" target="_blank">sources</a>) · inspired by <a href="https://shwn.design" target="_blank" rel="noreferrer">shwn.design</a></p></motion.div>
       <section className="hero" aria-label="Introduction">
         <div className="identity-row"><div><h1>V Sara Vivek</h1><p>AI engineer</p></div><nav aria-label="Social links"><ul>{socials.map((social) => <SocialLink key={social.label} {...social} />)}</ul></nav></div>
         <div className="intro-copy">
@@ -346,6 +349,8 @@ export default function Home() {
         <div className="section-heading"><h2 id="education-heading">Education</h2></div>
         <div><span className="education-icon"><GraduationCap size={17} strokeWidth={1.5} /></span><p><strong>B.Tech in Artificial Intelligence & Machine Learning</strong><span>Usha Rama College of Engineering · 2021–2025</span></p><MapPin size={13} aria-hidden="true" /><span>Telaprolu</span></div>
       </section>
+
+      <GuestbookSection />
 
       <motion.footer className="signature-wrap" initial={{ clipPath: "inset(0 100% 0 0)", opacity: 0.15 }} animate={{ clipPath: "inset(0 0% 0 0)", opacity: 1 }} whileHover={{ scale: 1.015, rotate: -0.25 }} transition={{ duration: 2.2, ease: [0.16, 1, 0.3, 1] }}>
         <Image className="signature-image" src="/signature.svg" alt="V Sara Vivek signature" width={1897} height={632} />

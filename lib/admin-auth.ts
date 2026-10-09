@@ -13,7 +13,7 @@ function bytesToHex(bytes: Uint8Array) {
   return Array.from(bytes, (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
-async function sha256(value: string) {
+export async function sha256(value: string) {
   return bytesToHex(new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(value))));
 }
 

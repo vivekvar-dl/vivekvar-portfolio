@@ -15,6 +15,13 @@
       "when": 1790094201869,
       "tag": "0001_colorful_gressill",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791537307715,
+      "tag": "0002_boring_scarecrow",
+      "breakpoints": true
     }
   ]
 }
