@@ -23,7 +23,7 @@ function forBrowser(response: Response) {
 
 // SDK assets and remote config live on the asset host; events, recordings and flags go to the API host.
 function proxyPostHog(request: Request, url: URL) {
-  const path = url.pathname.slice(POSTHOG_PROXY_PATH.length) || "/";
+  const path = url.pathname.slice(POSTHOG_PROXY_PATH.length);
   const host = /^\/(static|array)\//.test(path) ? POSTHOG_ASSET_HOST : POSTHOG_API_HOST;
   const headers = new Headers(request.headers);
   headers.delete("cookie");
@@ -31,12 +31,7 @@ function proxyPostHog(request: Request, url: URL) {
   // PostHog reads the visitor's country from this; without it every event geolocates to the edge.
   const ip = request.headers.get("cf-connecting-ip");
   if (ip) headers.set("x-forwarded-for", ip);
-  return fetch(`https://${host}${path}${url.search}`, {
-    method: request.method,
-    headers,
-    body: request.body,
-    redirect: "manual",
-  });
+  return fetch(`https://${host}${path}${url.search}`, { method: request.method, headers, body: request.body });
 }
 
 const worker = {
