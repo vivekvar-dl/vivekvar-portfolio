@@ -1,4 +1,5 @@
 import handler from "vinext/server/fetch-handler";
+import { POSTHOG_API_HOST, POSTHOG_ASSET_HOST, POSTHOG_PROXY_PATH } from "../lib/posthog";
 
 export * from "vinext/server/fetch-handler";
 
@@ -20,9 +21,24 @@ function forBrowser(response: Response) {
   return out;
 }
 
+// SDK assets and remote config live on the asset host; events, recordings and flags go to the API host.
+function proxyPostHog(request: Request, url: URL) {
+  const path = url.pathname.slice(POSTHOG_PROXY_PATH.length);
+  const host = /^\/(static|array)\//.test(path) ? POSTHOG_ASSET_HOST : POSTHOG_API_HOST;
+  const headers = new Headers(request.headers);
+  headers.delete("cookie");
+  headers.delete("host");
+  // PostHog reads the visitor's country from this; without it every event geolocates to the edge.
+  const ip = request.headers.get("cf-connecting-ip");
+  if (ip) headers.set("x-forwarded-for", ip);
+  return fetch(`https://${host}${path}${url.search}`, { method: request.method, headers, body: request.body });
+}
+
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+    // Before the edge cache: analytics requests are never cached.
+    if (url.pathname.startsWith(`${POSTHOG_PROXY_PATH}/`)) return proxyPostHog(request, url);
     if (request.method !== "GET" || UNCACHED.test(url.pathname)) return handler.fetch(request, env, ctx);
 
     // Router headers change the payload (HTML vs RSC, prefetch vs full), so they are part of the key.

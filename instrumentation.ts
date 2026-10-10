@@ -1,4 +1,4 @@
-import { POSTHOG_HOST, POSTHOG_TOKEN } from "@/lib/posthog";
+import { POSTHOG_API_HOST, POSTHOG_TOKEN } from "@/lib/posthog";
 
 type RequestInfo = { path: string; method: string; headers: Record<string, string | string[] | undefined> };
 
@@ -17,7 +17,7 @@ export async function onRequestError(error: unknown, request: RequestInfo) {
   if (!POSTHOG_TOKEN) return;
   const err = error instanceof Error ? error : new Error(String(error));
   const distinctId = browserDistinctId(request.headers);
-  await fetch(`${POSTHOG_HOST}/i/v0/e/`, {
+  await fetch(`https://${POSTHOG_API_HOST}/i/v0/e/`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
