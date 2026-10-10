@@ -3,7 +3,7 @@ import { POSTHOG_HOST, POSTHOG_TOKEN } from "@/lib/posthog";
 
 type ExceptionFrame = { filename?: string; in_app?: boolean };
 
-// Android in-app browsers (Instagram, Facebook) inject a native bridge served from `iabjs://`.
+// Instagram's Android in-app browser injects a native bridge served from `iabjs://`.
 // Its errors are not from this site's code, and each new bridge function opens a new issue.
 function dropInAppBrowserBridgeExceptions(event: CaptureResult | null): CaptureResult | null {
   if (event?.event !== "$exception") return event;
